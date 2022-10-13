@@ -11,11 +11,11 @@ To run the code, you need to install the following packages:
 - tensorflow
 - pytube
 - pydub
- 
-or 
+
+or
 
 you can use ```environment.yml``` file to create a conda environment.
-    
+
     conda env create -f environment.yml
 
 for Pip users:
@@ -26,13 +26,17 @@ for Pip users:
 
 ## Dataset
 
-Dataset contains 1873 audio files. Each audio file is 3 seconds long and has a sampling rate of 44.1 kHz. The dataset is divided into 8 classes: angry, calm, disgust, fear, happy, sad, surprise, and neutral. The dataset is available at [https://zenodo.org/record/1188976#.XqZ2J5NKjIU](https://zenodo.org/record/1188976#.XqZ2J5NKjIU)
-this is human voice dataset. for music there is a binary dataset with 2 classes: happy and sad. The dataset is available at [https://zenodo.org/record/1188976#.XqZ2J5NKjIU](https://zenodo.org/record/1188976#.XqZ2J5NKjIU)
+Dataset contains 1873 audio files. Each audio file is 3 seconds long and has a sampling rate of 44.1 kHz. The dataset is
+divided into 8 classes: angry, calm, disgust, fear, happy, sad, surprise, and neutral. The dataset is available
+at [https://zenodo.org/record/1188976#.XqZ2J5NKjIU](https://zenodo.org/record/1188976#.XqZ2J5NKjIU)
+this is human voice dataset. for music there is a binary dataset with 2 classes: happy and sad. The dataset is available
+at [https://zenodo.org/record/1188976#.XqZ2J5NKjIU](https://zenodo.org/record/1188976#.XqZ2J5NKjIU)
 Happy and sad music dataset.
 
 ## Feature Extraction
 
-The features are extracted using librosa library. The features are extracted from the audio files and stored in a csv file. The features are extracted using the following function:
+The features are extracted using librosa library. The features are extracted from the audio files and stored in a csv
+file. The features are extracted using the following function:
 
     def extract_feature(file_name):
         try:
@@ -49,50 +53,73 @@ The features are extracted using librosa library. The features are extracted fro
 
 ### 1.1) What is librosa?
 
-librosa is a python package for music and audio analysis. 
+librosa is a python package for music and audio analysis.
 It provides the building blocks necessary to create music information
-retrieval systems. It is built on top of the scientific 
+retrieval systems. It is built on top of the scientific
 Python stack (numpy, scipy, and matplotlib) and is distributed under the 3-clause BSD license.
 
 ### 1.2) What is mfcc?
 
-Mel-frequency cepstral coefficients (MFCCs) are coefficients that 
-collectively make up an MFC. They are derived from a 
-type of cepstral representation of the audio clip (a nonlinear 
+Mel-frequency cepstral coefficients (MFCCs) are coefficients that
+collectively make up an MFC. They are derived from a
+type of cepstral representation of the audio clip (a nonlinear
 "spectrum-of-a-spectrum").
 
 ### 1.3) What is chroma?
-Chroma features are a set of features used in music information retrieval. 
-They are based on the twelve different pitch classes, and are 
+
+Chroma features are a set of features used in music information retrieval.
+They are based on the twelve different pitch classes, and are
 used to describe the distribution of pitches in a piece of music.
 
 ### 1.4) What is mel?
-Mel spectrogram is a representation of the short-term power spectrum of a sound, based on a linear 
+
+Mel spectrogram is a representation of the short-term power spectrum of a sound, based on a linear
 cosine transform of a log power spectrum on a nonlinear mel scale of frequency.
 
 # To run this Project
 
 ```bash
 source env/bin/activate
-python3 main.py --file path/to/audio/file
+python3 main.py --file path/to/audio/file --model path/to/model
 ```
+
 for cond users:
 
 ```bash
 conda activate env
-python3 main.py --file path/to/audio/file
+python3 main.py --file path/to/audio/file --model path/to/model
 ```
+
 # To Train the model
 
 ```bash
 source env/bin/activate
 python3 DataLoader.py
-python3 train.py --data path/to/audio/file/dir
+python3 train.py --data path/to/audio/file/dir --model model_name
 ```
+
 for cond users:
 
 ```bash
 conda activate env
 python3 DataLoader.py
-python3 train.py --data path/to/audio/file/dir
+python3 train.py --data path/to/audio/file/dir -m model_name
 ```
+
+## Results and Discussion
+
+Results are saved as confusion matrix and classification report. The model is trained on 80% of the dataset and tested
+on 20% of the dataset. The model is trained for 100 epochs. The model is trained using the following function:
+
+    def train_model(model, train_data, train_labels, test_data, test_labels, epochs, batch_size):
+        model.fit(train_data, train_labels, epochs=epochs, batch_size=batch_size, validation_data=(test_data, test_labels))
+        return model
+
+Discussion: The model is trained on 80% of the dataset and tested on 20% of the dataset. The model is trained for 100
+epochs. The model is trained using the following function:
+
+    def train_model(model, train_data, train_labels, test_data, test_labels, epochs, batch_size):
+        model.fit(train_data, train_labels, epochs=epochs, batch_size=batch_size, validation_data=(test_data, test_labels))
+        return model
+
+by adding more data and training the model for more epochs, the accuracy of the model can be increased.
