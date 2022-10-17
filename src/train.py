@@ -26,8 +26,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train model')
     parser.add_argument('-d', '--data', help='dir containing npy file to train', required=False, default='data')
     parser.add_argument('-m', '--model_name', help='model to use [ANN, CNN, LSTM, GRU, CNN2]', required=False, default='ANN')
+    parser.add_argument('-e', '--epochs', help='number of epochs to train', required=False, default=100)
     args = parser.parse_args()
     model_name = args.model_name
+    epochs = args.epochs
     # load numpy array
     if os.path.exists(args.data):
         X_train = np.load(os.path.join(args.data, 'X_train.npy'), allow_pickle=True)
@@ -53,9 +55,9 @@ if __name__ == '__main__':
         print(model)
         print(model.build_model())
         print(model.summary())
-        print(model.train(X_train, y_train, X_test, y_test, epochs=100, batch_size=32))
+        print(model.train(X_train, y_train, X_test, y_test, epochs=int(epochs), batch_size=32))
         print(model.save(f'models/{model_name}.h5'))
         print(model.evaluate(X_test, y_test))
-        # print(model.plot_model())
+        rprint(f"[bold green]{model.plot_model()}")
     else:
         rprint("[bold red]Invalid data directory[/bold red]")

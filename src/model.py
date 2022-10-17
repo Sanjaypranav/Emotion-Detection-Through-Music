@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from seaborn import heatmap
 from sklearn.metrics import confusion_matrix
+from matplotlib import pyplot as plt
 
 # Tensorflow to use GPU
 gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -85,7 +86,9 @@ class ANN:
         return self.model.summary()
 
     def plot_model(self):
-        return tf.keras.utils.plot_model(self.model, show_shapes=True)
+        plt.figure(figsize=(10,10))
+        tf.keras.utils.plot_model(self.model, to_file='results/ANN.png', show_shapes=True, show_layer_names=True)
+        return "Plot Saved to results"
 
     def get_config(self):
         return self.model.get_config()
@@ -171,7 +174,9 @@ class CNN:
         return self.model.summary()
 
     def plot_model(self):
-        return tf.keras.utils.plot_model(self.model, show_shapes=True)
+        plt.figure(figsize=(10,10))
+        tf.keras.utils.plot_model(self.model, to_file='results/CNN.png', show_shapes=True, show_layer_names=True)
+        return "Plot Saved to results"
 
     def get_config(self):
         return self.model.get_config()
@@ -240,7 +245,9 @@ class LSTM:
         return self.model.summary()
 
     def plot_model(self):
-        return tf.keras.utils.plot_model(self.model, show_shapes=True)
+        plt.figure(figsize=(20,10))
+        tf.keras.utils.plot_model(self.model, to_file='results/LSTM.png', show_shapes=True, show_layer_names=True)
+        return "Plot Saved to results"
 
     def get_config(self):
         return self.model.get_config()
@@ -309,7 +316,9 @@ class GRU:
         return self.model.summary()
 
     def plot_model(self):
-        return tf.keras.utils.plot_model(self.model, show_shapes=True)
+        plt.figure(figsize=(20,10))
+        tf.keras.utils.plot_model(self.model, to_file='results/GRU.png', show_shapes=True, show_layer_names=True)
+        return "Plot Saved to results"
 
     def get_config(self):
         return self.model.get_config()
@@ -385,7 +394,9 @@ class CNN2:
         return self.model.summary()
 
     def plot_model(self):
-        return tf.keras.utils.plot_model(self.model, show_shapes=True)
+        plt.figure(figsize=(10,10))
+        tf.keras.utils.plot_model(self.model, to_file='results/CNN-2.png', show_shapes=True, show_layer_names=True)
+        return "Plot Saved to results"
 
     def get_config(self):
         return self.model.get_config()
