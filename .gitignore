@@ -3,3 +3,5 @@ data/X_test.npy
 data/y_train.npy
 data/y_test.npy
 .idea
+src/__pycache__
+MusicScrapper

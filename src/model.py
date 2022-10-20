@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 from tensorflow.keras.models import Sequential as Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv1D, MaxPooling1D, BatchNormalization
@@ -11,6 +12,7 @@ import matplotlib.pyplot as plt
 from seaborn import heatmap
 from sklearn.metrics import confusion_matrix
 from matplotlib import pyplot as plt
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Tensorflow to use GPU
 gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -95,6 +97,7 @@ class ANN:
 
     def get_weights(self):
         return self.model.get_weights()
+    
 
 
 class CNN:
@@ -183,6 +186,7 @@ class CNN:
 
     def get_weights(self):
         return self.model.get_weights()
+    
 
 
 class LSTM:
@@ -254,7 +258,7 @@ class LSTM:
 
     def get_weights(self):
         return self.model.get_weights()
-
+    
 
 class GRU:
     def __init__(self, num_labels: int = 2):
@@ -403,3 +407,4 @@ class CNN2:
 
     def get_weights(self):
         return self.model.get_weights()
+

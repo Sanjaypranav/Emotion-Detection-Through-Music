@@ -6,9 +6,22 @@ from Audio import Preprocessor
 from rich import print as rprint
 import pickle as pkl
 import tensorflow as tf
+import soundfile as sf
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # load audio file
 
+def Arousal(probablities):
+    if probablities[0] > probablities[1]:
+        return 'high arousal'
+    else:
+        return 'low arousal'
 
+def trim_audio_to_10_seconds(audio):
+    if len(audio) > 160000:
+        return audio[:160000]
+    else:
+        return audio
+    
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Train model')
@@ -22,10 +35,13 @@ if __name__=="__main__":
         rprint(f"[bold green]Model loaded {model_name}.h5[/bold green]")
         preprocessor = Preprocessor()
         features = preprocessor.get_features(args.file)
+        print(len(features))
+        # features = trim_audio_to_10_seconds(features)
         features = features.reshape(1, -1)
         onehot_encoder = pkl.load(open('data/onehot_encoder.pkl', 'rb'))
-        prediction = onehot_encoder.inverse_transform(model.predict(features))
-        print(prediction[0][0])
+        prediction = model.predict(features)
+        rprint(f"[bold purple]{onehot_encoder.inverse_transform(prediction)[0][0]}[/bold purple]")
+        rprint(f"[bold purple]{Arousal(prediction[0])}[/bold purple]")
         rprint("[bold green]Prediction complete[/bold green]")
     else:
         rprint("[bold red]Invalid file[/bold red]")
