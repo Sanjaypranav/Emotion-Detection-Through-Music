@@ -80,14 +80,14 @@ cosine transform of a log power spectrum on a nonlinear mel scale of frequency.
 
 ```bash
 source env/bin/activate
-python3 main.py --file path/to/audio/file --model path/to/model
+python3 detect.py --file path/to/audio/file --model path/to/model
 ```
 
 for cond users:
 
 ```bash
 conda activate env
-python3 main.py --file path/to/audio/file --model path/to/model
+python3 detect.py --file path/to/audio/file --model path/to/model
 ```
 
 # To Train the model
@@ -123,3 +123,11 @@ epochs. The model is trained using the following function:
         return model
 
 by adding more data and training the model for more epochs, the accuracy of the model can be increased.
+
+## Deploying into fastapi
+
+```bash
+source env/bin/activate
+export PYTHONPATH=./src
+uvicorn main:app --reload
+```
