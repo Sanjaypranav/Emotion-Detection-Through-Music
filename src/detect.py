@@ -55,7 +55,7 @@ if __name__ == "__main__":
         rprint(f"[bold green]Model loaded {model_name}.h5[/bold green]")
         preprocessor = Preprocessor()
         features = preprocessor.get_features(args.file)
-        print(len(features))
+        # print(len(features))
         # features = trim_audio_to_10_seconds(features)
         features = features.reshape(1, -1)
         onehot_encoder = pkl.load(open('data/onehot_encoder.pkl', 'rb'))
