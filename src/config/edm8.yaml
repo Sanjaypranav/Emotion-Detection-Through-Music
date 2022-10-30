@@ -1,0 +1,10 @@
+train: "/content/drive/MyDrive/ds/EDM 8 emotions/images/train"
+
+val: ""
+
+
+
+nc: 8
+
+
+names: ['anger','bored','excited','fear','happy','relax','sad','worry']

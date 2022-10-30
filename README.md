@@ -131,3 +131,19 @@ source env/bin/activate
 export PYTHONPATH=./src
 uvicorn main:app --reload
 ```
+
+## Yolov5
+
+```bash
+source env/bin/activate
+cd src
+git clone https://github.com/ultralytics/yolov5.git
+cd yolov5
+pip install -r requirements.txt
+cd ..
+cd ..
+python src/yolov5/detect.py 
+        --weights "src/weights/best.pt" 
+      --source data/imgs --data "src/config/edm8.yaml"
+       --name results/test
+```

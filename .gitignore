@@ -5,3 +5,5 @@ data/y_test.npy
 .idea
 src/__pycache__
 MusicScrapper
+src/yolov5
+/src/yolov5/
