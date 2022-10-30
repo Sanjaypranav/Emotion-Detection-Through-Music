@@ -144,6 +144,6 @@ cd ..
 cd ..
 python src/yolov5/detect.py 
         --weights "src/weights/best.pt" 
-      --source data/imgs --data "src/config/edm8.yaml"
+      --source data/img --data "src/config/edm8.yaml"
        --name results/test
 ```

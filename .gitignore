@@ -7,3 +7,5 @@ src/__pycache__
 MusicScrapper
 src/yolov5
 /src/yolov5/
+src/yolov5/__pycache__
+/src/yolov5/
