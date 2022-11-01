@@ -34,31 +34,28 @@ def video_breaker(video_path: str, save_dir: str = "results/frames/") -> str:
     return "Frames Saved"
 
 
-
-
 classes = {
-    0 : "anger",
-    1 : "bored",
-    2 : "excited",
-    3 : "fear",
-    4 : "happy",
-    5 : "relax",
-    6 : "sad",
-    7 : "worry"
+    0: "anger",
+    1: "bored",
+    2: "excited",
+    3: "fear",
+    4: "happy",
+    5: "relax",
+    6: "sad",
+    7: "worry"
 }
 
-global emotions , path
-emotions = [0, 0, 0, 0, 0, 0 ,0, 0]
+global emotions, path
+emotions = [0, 0, 0, 0, 0, 0, 0, 0]
 path = 'src/yolov5/runs/detect/exp17/labels'
+
+
 def read_text_file(file_path: str) -> str:
     for file in os.listdir(file_path):
         # print(file)
-        with open(f'{file_path}/{file}',"r") as f:
+        with open(f'{file_path}/{file}', "r") as f:
             emotions[int(f.read(1))] += 1
-    return  f"Done {file_path}"
-
-
-
+    return f"Done {file_path}"
 
 
 if __name__ == '__main__':
@@ -81,10 +78,8 @@ if __name__ == '__main__':
     os.system(
         "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
     read_text_file(path)
-    percentage = [i/sum(emotions) for i in emotions]
+    percentage = [i / sum(emotions) for i in emotions]
     rprint(percentage)
     # print(max(percentage))
     print(classes[percentage.index(max(percentage))])
-    print("Done")
-
     # read_and_count_output_file()

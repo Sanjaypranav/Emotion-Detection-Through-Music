@@ -147,3 +147,8 @@ python src/yolov5/detect.py
       --source data/img --data "src/config/edm8.yaml"
        --name results/test
 ```
+
+for ffmpeg 
+```bash
+conda install -c conda-forge ffmpeg
+```
