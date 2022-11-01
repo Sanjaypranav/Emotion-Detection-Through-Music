@@ -41,7 +41,6 @@ def trim_audio_to_10_seconds(audio):
     else:
         return audio
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train model')
     parser.add_argument('-f', '--file', help='audio file to get emotion', required=True)
