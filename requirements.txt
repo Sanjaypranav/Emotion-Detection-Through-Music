@@ -72,4 +72,4 @@ graphviz==0.20.1
 seaborn==0.11.2
 pydub==0.25.1
 matplotlib==3.5.2
-
+moviepy==1.0.3
