@@ -9,3 +9,8 @@ src/yolov5
 /src/yolov5/
 src/yolov5/__pycache__
 /src/yolov5/
+results/frames
+/src/yolov5/data/*.yaml
+/src/yolov5/data/*.jpg
+src/yolov5/data/coco.yaml
+src/yolov5/data/coco128.yaml
