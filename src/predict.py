@@ -7,7 +7,12 @@ import math
 import cv2
 import moviepy.editor as mp
 from rich import print as rprint
-
+import tensorflow as tf
+import pickle as pkl
+from Audio import Preprocessor
+from detect import get_valence_arousal
+from numba import cuda
+device = cuda.get_current_device()
 os.environ['MKL_SERVICE_FORCE_INTEL'] = '1'
 
 
@@ -73,8 +78,21 @@ if __name__ == '__main__':
     rprint(f"[bold green]Extracting audio from {video_path}[/bold green]")
     print(audio_extractor(video_path, save_dir))
     print(video_breaker(video_path))
-    os.system(f"python src/detect.py -m {opt.audio_model} -f {opt.save_dir}/test.mp3 ")
+    # os.system(f"python src/detect.py -m {opt.audio_model} -f {opt.save_dir}/test.mp3 ")
     # # capture bash output to a text file
+    model = tf.keras.models.load_model(f'models/{audio_model}.h5')
+    rprint(f"[bold green]Model loaded {audio_model}.h5[/bold green]")
+    preprocessor = Preprocessor()
+    features = preprocessor.get_features(save_dir + '/' + 'test.mp3')
+    # print(len(features))
+    # features = trim_audio_to_10_seconds(features)
+    features = features.reshape(1, -1)
+    onehot_encoder = pkl.load(open('data/onehot_encoder.pkl', 'rb'))
+    prediction = model.predict(features)
+    rprint(f"[bold purple]{onehot_encoder.inverse_transform(prediction)[0][0]}[/bold purple]")
+    rprint(f"[bold yellow]{get_valence_arousal(prediction[0]), prediction[0]}[/bold yellow]")
+    rprint("[bold green]Prediction complete[/bold green]")
+    device.reset()
     os.system(
         "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
     read_text_file(path)
