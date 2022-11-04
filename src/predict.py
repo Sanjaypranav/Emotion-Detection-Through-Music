@@ -62,6 +62,11 @@ def read_text_file(file_path: str) -> str:
             emotions[int(f.read(1))] += 1
     return f"Done {file_path}"
 
+def happy_or_frail():
+    if emotions[4] > emotions[6]:
+        return "Happy"
+    else:
+        return "Frail"
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -100,4 +105,6 @@ if __name__ == '__main__':
     rprint(percentage)
     # print(max(percentage))
     print(classes[percentage.index(max(percentage))])
+    print(happy_or_frail())
+    rprint(f"[bold green]Done[/bold green]")
     # read_and_count_output_file()
