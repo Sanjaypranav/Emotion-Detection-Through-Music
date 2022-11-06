@@ -52,7 +52,7 @@ classes = {
 
 global emotions, path
 emotions = [0, 0, 0, 0, 0, 0, 0, 0]
-path = 'src/yolov5/runs/detect/exp17/labels'
+path = 'src/yolov5/runs/detect/exp/labels'
 
 
 def read_text_file(file_path: str) -> str:
@@ -89,8 +89,6 @@ if __name__ == '__main__':
     rprint(f"[bold green]Model loaded {audio_model}.h5[/bold green]")
     preprocessor = Preprocessor()
     features = preprocessor.get_features(save_dir + '/' + 'test.mp3')
-    # print(len(features))
-    # features = trim_audio_to_10_seconds(features)
     features = features.reshape(1, -1)
     onehot_encoder = pkl.load(open('data/onehot_encoder.pkl', 'rb'))
     prediction = model.predict(features)
