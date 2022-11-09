@@ -65,10 +65,10 @@ async def predict(file: UploadFile = File(...)):
     os.system(
         "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
     read_text_file(path)
-    print(emotions)
+    # print(emotions)
     percentage = [i / sum(emotions) for i in emotions]
     rprint(percentage)
-    return f"{classes[percentage.index(max(percentage))]} % {max(percentage) * 100}"
+    return f"Audio : {onehot_encoder.inverse_transform(prediction)[0][0]}, Video : {classes[emotions.index(max(emotions))]} , Emotions : {percentage}"
 
 
 @app.get("/")
