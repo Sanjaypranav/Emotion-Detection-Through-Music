@@ -12,8 +12,17 @@ from predict import audio_extractor, video_breaker
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from rich import print as rprint
+# from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+# from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI(
+    title="Emotion Detection API",
+    description="This is a simple API for emotion detection",
+    version="1.0.0",
+    allow_credentials=True,
+    allow_origins="*",
+)
 
 classes = {
     0: "anger",
@@ -58,17 +67,28 @@ async def predict(file: UploadFile = File(...)):
     # Predict valence and arousal
     onehot_encoder = pkl.load(open('data/onehot_encoder.pkl', 'rb'))
     prediction = model.predict(features)
-    rprint(f"[bold purple]{onehot_encoder.inverse_transform(prediction)[0][0]}[/bold purple]")
-    rprint(f"[bold yellow]{get_valence_arousal(prediction[0]), prediction[0]}[/bold yellow]")
-    rprint("[bold green]Prediction complete[/bold green]")
+    # rprint(f"[bold purple]{onehot_encoder.inverse_transform(prediction)[0][0]}[/bold purple]")
+    # rprint(f"[bold yellow]{get_valence_arousal(prediction[0]), prediction[0]}[/bold yellow]")
+    # rprint("[bold green]Prediction complete[/bold green]")
     device.reset()
-    os.system(
-        "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
+    # os.system(
+    #     "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
     read_text_file(path)
     # print(emotions)
     percentage = [i / sum(emotions) for i in emotions]
     rprint(percentage)
-    return f"Audio : {onehot_encoder.inverse_transform(prediction)[0][0]}, Video : {classes[emotions.index(max(emotions))]} , Emotions : {percentage}"
+    Audio = onehot_encoder.inverse_transform(prediction)[0][0]
+    percentage_emotions_audio = prediction[0]
+    Video = classes[emotions.index(max(emotions))]
+    percentage_emotions_video = percentage
+    final = {
+        'Audio' : Audio,
+        'Emotions_Audio' : percentage_emotions_audio,
+        'Video' : Video,
+        'Emotion_Video' : percentage_emotions_video
+    }
+    print(final)
+    return f"{final['Audio']}"
 
 
 @app.get("/")
