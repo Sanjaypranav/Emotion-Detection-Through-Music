@@ -3,6 +3,12 @@ import os
 import pickle as pkl
 import tensorflow as tf
 from numba import cuda
+# importing jinja2
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from starlette.requests import Request
+from fastapi import Form
+from fastapi.responses import HTMLResponse, FileResponse
 
 device = cuda.get_current_device()
 from Audio import Preprocessor
@@ -96,7 +102,14 @@ async def predict(file: UploadFile = File(...)):
     # return JSONResponse(content=jsonable_encoder(final))
     return f"{final}"
 
+templates = templates = Jinja2Templates(directory="src/templates")
+
+@app.get("/filename")
+async def get_file_name(file_name):
+    return f"{file_name}"
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+async def read_root(request : Request):
+    # get file from form
+    
+    return templates.TemplateResponse("home.html", {"request": request})
