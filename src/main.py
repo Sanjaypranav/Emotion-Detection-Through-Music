@@ -7,12 +7,12 @@ from numba import cuda
 device = cuda.get_current_device()
 from Audio import Preprocessor
 
-from detect import get_valence_arousal
+
 from predict import audio_extractor, video_breaker
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from rich import print as rprint
-# from fastapi.encoders import jsonable_encoder
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 # from pydantic import BaseModel
 
@@ -48,47 +48,53 @@ def read_text_file(file_path: str) -> str:
     return f"Done {file_path}"
 
 
+def happy_or_frail(percentage: list) -> str:
+    healthy = ["happy", "relax", "excited"]
+    frail = ["sad", "worry", "bored", "fear", "anger"]
+    if classes[percentage.index(max(percentage))] in healthy:
+        return "Healthy"
+    elif classes[percentage.index(max(percentage))] in frail:
+        return "Frail"
+
+
 # fastapi app to get audio file and return valence and arousal
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     file_path = f"data/scraped-videos/{file.filename}"
     print(file_path)
-    # Extract audio from video
     audio_extractor(file_path)
-    # Break video into frames
     video_breaker(file_path)
-    # Preprocess audio
-    preprocessor = Preprocessor()
+
     preprocessor = Preprocessor()
     features = preprocessor.get_features('test/tiktok/test.mp3')
     features = features.reshape(1, -1)
-    # Load model
     model = tf.keras.models.load_model('models/ANN.h5')
-    # Predict valence and arousal
     onehot_encoder = pkl.load(open('data/onehot_encoder.pkl', 'rb'))
     prediction = model.predict(features)
-    # rprint(f"[bold purple]{onehot_encoder.inverse_transform(prediction)[0][0]}[/bold purple]")
-    # rprint(f"[bold yellow]{get_valence_arousal(prediction[0]), prediction[0]}[/bold yellow]")
-    # rprint("[bold green]Prediction complete[/bold green]")
     device.reset()
+
+    """Yolov5"""
+
     # os.system(
     #     "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
     read_text_file(path)
     # print(emotions)
     percentage = [i / sum(emotions) for i in emotions]
-    rprint(percentage)
+    # rprint(percentage)
     Audio = onehot_encoder.inverse_transform(prediction)[0][0]
     percentage_emotions_audio = prediction[0]
     Video = classes[emotions.index(max(emotions))]
     percentage_emotions_video = percentage
     final = {
-        'Audio' : Audio,
-        'Emotions_Audio' : percentage_emotions_audio,
-        'Video' : Video,
-        'Emotion_Video' : percentage_emotions_video
+        'Audio': Audio,
+        'Emotions_Audio': percentage_emotions_audio,
+        'Video': Video,
+        'Emotion_Video': percentage_emotions_video,
+        'Final': happy_or_frail(percentage)
     }
-    print(final)
-    return f"{final['Audio']}"
+    # print(final)
+    # return JSONResponse(content=jsonable_encoder(final))
+    return f"{final}"
 
 
 @app.get("/")

@@ -62,9 +62,11 @@ def read_text_file(file_path: str) -> str:
             emotions[int(f.read(1))] += 1
     return f"Done {file_path}"
 
-def happy_or_frail():
-    if emotions[4] > emotions[6]:
-        return "Happy"
+def happy_or_frail(percentage : list) -> str:
+    healthy=["happy","relax","excited"]
+    frail=["sad","worry","bored","fear","anger"]
+    if classes[percentage.index(max(percentage))] in healthy:
+        return "Healthy"
     else:
         return "Frail"
 
@@ -96,13 +98,13 @@ if __name__ == '__main__':
     rprint(f"[bold yellow]{get_valence_arousal(prediction[0]), prediction[0]}[/bold yellow]")
     rprint("[bold green]Prediction complete[/bold green]")
     device.reset()
-    os.system(
-        "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
+    # os.system(
+    #     "python3 'src/yolov5/detect.py' --weights 'src/weights/best.pt' --source 'results/frames/' --data src/config/edm8.yaml --save-txt")
     read_text_file(path)
     percentage = [i / sum(emotions) for i in emotions]
     rprint(percentage)
     # print(max(percentage))
     print(classes[percentage.index(max(percentage))])
-    print(happy_or_frail())
+    print(happy_or_frail(percentage))
     rprint(f"[bold green]Done[/bold green]")
     # read_and_count_output_file()

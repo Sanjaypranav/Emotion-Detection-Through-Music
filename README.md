@@ -80,14 +80,28 @@ cosine transform of a log power spectrum on a nonlinear mel scale of frequency.
 
 ```bash
 source env/bin/activate
-python3 detect.py --file path/to/audio/file --model path/to/model
+cd src
+git clone https://github.com/ultralytics/yolov5.git
+cd yolov5
+pip install -r requirements.txt
+cd ..
+cd ..
+export PYTHONPATH=./src
+uvicorn main:app --reload
 ```
 
 for cond users:
 
 ```bash
 conda activate env
-python3 detect.py --file path/to/audio/file --model path/to/model
+cd src
+git clone https://github.com/ultralytics/yolov5.git
+cd yolov5
+pip install -r requirements.txt
+cd ..
+cd ..
+export PYTHONPATH=./src
+uvicorn main:app --reload
 ```
 
 # To Train the model
