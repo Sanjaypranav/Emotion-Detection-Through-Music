@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI, File, UploadFile
 import os
 import pickle as pkl
@@ -111,5 +112,8 @@ async def get_file_name(file_name):
 @app.get("/")
 async def read_root(request : Request):
     # get file from form
-    
     return templates.TemplateResponse("home.html", {"request": request})
+
+
+if __name__ == "__main__":
+    uvicorn.run(debug=True,app=app)
