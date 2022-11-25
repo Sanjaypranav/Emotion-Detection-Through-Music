@@ -166,3 +166,10 @@ for ffmpeg
 ```bash
 conda install -c conda-forge ffmpeg
 ```
+
+# Synopsys
+
+## Title of the Project : Emotion Detection using Audio
+
+## Aim of the Project : To scrape video from Tiktok user and extract audio from the parsed video for classifying emotion of the music. 
+
